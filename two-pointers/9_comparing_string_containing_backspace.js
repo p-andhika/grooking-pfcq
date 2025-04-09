@@ -25,27 +25,83 @@ Explanation: After applying backspaces the strings become "xywrrmp" and "xywrrmp
 */
 
 class Solution {
-  getFinalString(str) {
-    const stack = [];
+  // getFinalString(str) {
+  //   const stack = [];
+  //
+  //   for (let char of str) {
+  //     if (char == "#") {
+  //       if (stack.length > 0) {
+  //         stack.pop();
+  //       }
+  //     } else {
+  //       stack.push(char);
+  //     }
+  //   }
+  //
+  //   return stack.join("");
+  // }
+  //
+  // compare(str1, str2) {
+  //   const finalString1 = this.getFinalString(str1);
+  //   const finalString2 = this.getFinalString(str2);
+  //
+  //   return finalString1 == finalString2;
+  // }
 
-    for (let char of str) {
-      if (char == "#") {
-        if (stack.length > 0) {
-          stack.pop();
-        }
+  // other solution
+  getValidCharIndex(str, index) {
+    let backspaceCount = 0;
+
+    // skip char and handle backspaces
+    while (index >= 0) {
+      if (str[index] === "#") {
+        // count backspace
+        backspaceCount++;
+      } else if (backspaceCount > 0) {
+        // skip this char because of a backspace
+        backspaceCount--;
       } else {
-        stack.push(char);
+        // valid char found
+        break;
       }
+
+      index--;
     }
 
-    return stack.join("");
+    return index;
   }
 
   compare(str1, str2) {
-    const finalString1 = this.getFinalString(str1);
-    const finalString2 = this.getFinalString(str2);
+    // start from  the end of both strings
+    let pointer1 = str1.length - 1;
+    let pointer2 = str2.length - 1;
 
-    return finalString1 == finalString2;
+    while (pointer1 >= 0 || pointer2 >= 0) {
+      // find next valid char in each string
+      pointer1 = this.getValidCharIndex(str1, pointer1);
+      pointer2 = this.getValidCharIndex(str2, pointer2);
+
+      // if one of string is exhausted
+      if (pointer1 >= 0 !== pointer2 >= 0) {
+        return false;
+      }
+
+      // if both strings are exhausted, they're equal
+      if (pointer1 < 0 && pointer2 < 0) {
+        return true;
+      }
+
+      // if char don't match
+      if (str1[pointer1] !== str2[pointer2]) {
+        return false;
+      }
+
+      // move to next char
+      pointer1--;
+      pointer2--;
+    }
+
+    return true;
   }
 }
 
