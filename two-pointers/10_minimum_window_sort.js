@@ -54,6 +54,11 @@ class Solution {
       subarrayMax = Math.max(subarrayMax, arr[i]);
     }
 
+    // expand the right boundary to include any elements greater than subarrayMin
+    while (left > 0 && arr[left - 1] > subarrayMin) {
+      left--;
+    }
+
     // expand the right boundary to include any elements less than subarrayMax
     while (right < arr.length - 1 && arr[right + 1] < subarrayMax) {
       right++;
@@ -65,6 +70,6 @@ class Solution {
 
 const sol = new Solution();
 console.log(sol.sort([1, 2, 5, 3, 7, 10, 9, 12]));
-console.log(sol.sort([1, 3, 2, 0, -1, 7, 10]));
-console.log(sol.sort([1, 2, 3]));
-console.log(sol.sort([3, 2, 1]));
+// console.log(sol.sort([1, 3, 2, 0, -1, 7, 10]));
+// console.log(sol.sort([1, 2, 3]));
+// console.log(sol.sort([3, 2, 1]));
